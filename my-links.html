@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marcipher</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      min-height: 100vh;
+      background: #0a0a0f;
+      font-family: 'Rajdhani', sans-serif;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(120, 0, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(255, 0, 128, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 450px;
+    }
+
+    .avatar-container {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 3px solid transparent;
+      border-top-color: #00ffff;
+      border-right-color: #ff00ff;
+      border-radius: 50%;
+      animation: spin 3s linear infinite;
+      top: -20px;
+      left: -20px;
+    }
+
+    .avatar-ring:nth-child(2) {
+      width: 160px;
+      height: 160px;
+      border-top-color: #ff00ff;
+      border-right-color: #ffff00;
+      animation-duration: 4s;
+      animation-direction: reverse;
+      top: -30px;
+      left: -30px;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1a1a2e, #2d1b4e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 45px;
+      margin: 0 auto;
+      position: relative;
+      box-shadow: 
+        0 0 30px rgba(0, 255, 255, 0.3),
+        0 0 60px rgba(255, 0, 255, 0.2),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+      border: 3px solid transparent;
+      background-clip: padding-box;
+    }
+
+    .avatar::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #00ffff, #ff00ff, #ffff00);
+      z-index: -1;
+      animation: borderRotate 4s linear infinite;
+    }
+
+    @keyframes borderRotate {
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    .name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 32px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      margin-bottom: 5px;
+      background: linear-gradient(90deg, #00ffff, #ff00ff, #00ffff);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 3s linear infinite;
+      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    .bio {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .link {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 18px 25px;
+      background: linear-gradient(135deg, rgba(20, 20, 35, 0.9), rgba(30, 20, 50, 0.9));
+      border-radius: 15px;
+      text-decoration: none;
+      color: white;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .link::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    .link:hover::before {
+      left: 100%;
+    }
+
+    .link::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 15px;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--glow-color-1), var(--glow-color-2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .link:hover::after {
+      opacity: 1;
+    }
+
+    .link:hover {
+      transform: translateX(10px) scale(1.02);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 0 20px var(--glow-shadow);
+    }
+
+    .link-icon {
+      font-size: 28px;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--glow-color-1), var(--glow-color-2));
+      border-radius: 12px;
+      box-shadow: 0 4px 15px var(--glow-shadow);
+      transition: transform 0.3s;
+    }
+
+    .link:hover .link-icon {
+      transform: rotate(10deg) scale(1.1);
+    }
+
+    .link-text { flex: 1; }
+    .link-title { 
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+    .link-handle { 
+      font-size: 13px; 
+      color: #888;
+      margin-top: 2px;
+    }
+    .link-arrow { 
+      font-size: 20px;
+      opacity: 0.5;
+      transition: all 0.3s;
+    }
+    .link:hover .link-arrow {
+      opacity: 1;
+      transform: translateX(5px);
+    }
+
+    .riot-tr { --glow-color-1: #ff6b6b; --glow-color-2: #ffa500; --glow-shadow: rgba(255, 107, 107, 0.4); }
+    .riot-euw { --glow-color-1: #4ecdc4; --glow-color-2: #44a3aa; --glow-shadow: rgba(78, 205, 196, 0.4); }
+    .email { --glow-color-1: #667eea; --glow-color-2: #764ba2; --glow-shadow: rgba(102, 126, 234, 0.4); }
+    .instagram { --glow-color-1: #f857a6; --glow-color-2: #ff5858; --glow-shadow: rgba(248, 87, 166, 0.4); }
+    .steam { --glow-color-1: #00ffff; --glow-color-2: #0088ff; --glow-shadow: rgba(0, 255, 255, 0.4); }
+
+    .floating {
+      position: fixed;
+      font-size: 20px;
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .floating:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+    .floating:nth-child(2) { top: 20%; right: 15%; animation-delay: 1s; }
+    .floating:nth-child(3) { bottom: 30%; left: 5%; animation-delay: 2s; }
+    .floating:nth-child(4) { bottom: 15%; right: 10%; animation-delay: 3s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+    }
+
+    .glow-text {
+      position: absolute;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 100px;
+      font-weight: 900;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+      white-space: nowrap;
+    }
+
+    .glow-text-1 { top: 10%; left: 50%; transform: translateX(-50%); color: #ff00ff; }
+    .glow-text-2 { bottom: 5%; left: 50%; transform: translateX(-50%); color: #00ffff; }
+
+    .side-decor {
+      position: fixed;
+      top: 0;
+      height: 100%;
+      width: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      z-index: 1;
+      opacity: 0.6;
+    }
+
+    .side-decor.left { left: 0; }
+    .side-decor.right { right: 0; }
+
+    .side-line {
+      width: 2px;
+      height: 150px;
+      background: linear-gradient(to bottom, transparent, var(--line-color), transparent);
+      animation: lineGlow 3s ease-in-out infinite;
+    }
+
+    .side-icon {
+      font-size: 24px;
+      animation: sideFloat 4s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px var(--icon-color));
+    }
+
+    @keyframes lineGlow {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes sideFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .corner-decor {
+      position: fixed;
+      width: 150px;
+      height: 150px;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    .corner-decor.top-left {
+      top: 0;
+      left: 0;
+      border-top: 3px solid #ff00ff;
+      border-left: 3px solid #ff00ff;
+    }
+
+    .corner-decor.top-right {
+      top: 0;
+      right: 0;
+      border-top: 3px solid #00ffff;
+      border-right: 3px solid #00ffff;
+    }
+
+    .corner-decor.bottom-left {
+      bottom: 0;
+      left: 0;
+      border-bottom: 3px solid #ffff00;
+      border-left: 3px solid #ffff00;
+    }
+
+    .corner-decor.bottom-right {
+      bottom: 0;
+      right: 0;
+      border-bottom: 3px solid #00ff88;
+      border-right: 3px solid #00ff88;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-overlay"></div>
+  
+  <div class="glow-text glow-text-1">MARCIPHER</div>
+  <div class="glow-text glow-text-2">GAMER</div>
+
+  <div class="floating">⚔️</div>
+  <div class="floating">🎮</div>
+  <div class="floating">🔥</div>
+  <div class="floating">💫</div>
+
+  <div class="corner-decor top-left"></div>
+  <div class="corner-decor top-right"></div>
+  <div class="corner-decor bottom-left"></div>
+  <div class="corner-decor bottom-right"></div>
+
+  <div class="side-decor left">
+    <div class="side-line" style="--line-color: #ff00ff;"></div>
+    <div class="side-icon" style="--icon-color: #ff00ff;">⚔️</div>
+    <div class="side-line" style="--line-color: #00ffff;"></div>
+    <div class="side-icon" style="--icon-color: #00ffff;">🎮</div>
+    <div class="side-line" style="--line-color: #ffff00;"></div>
+  </div>
+
+  <div class="side-decor right">
+    <div class="side-line" style="--line-color: #00ffff;"></div>
+    <div class="side-icon" style="--icon-color: #00ffff;">🔥</div>
+    <div class="side-line" style="--line-color: #ff00ff;"></div>
+    <div class="side-icon" style="--icon-color: #ff00ff;">💎</div>
+    <div class="side-line" style="--line-color: #00ff88;"></div>
+  </div>
+
+  <div class="container">
+    <div class="avatar-container">
+      <div class="avatar-ring"></div>
+      <div class="avatar-ring"></div>
+      <div class="avatar">
+        <img src="https://github.com/Captain-Marcipher/marcipher-links/raw/main/download%20(1).jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+      </div>
+    </div>
+    
+    <h1 class="name">Marcipher</h1>
+    <p class="bio">Gamer • Content Creator</p>
+    
+    <div class="links">
+      <a href="https://op.gg/lol/summoners/tr/Hain%20Naruto-TR1" class="link riot-tr" target="_blank">
+        <span class="link-icon">🎮</span>
+        <div class="link-text">
+          <div class="link-title">Riot - TR</div>
+          <div class="link-handle">Hain Naruto</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+      
+      <a href="https://op.gg/lol/summoners/euw/Marcipher-505" class="link riot-euw" target="_blank">
+        <span class="link-icon">🎮</span>
+        <div class="link-text">
+          <div class="link-title">Riot - EUW</div>
+          <div class="link-handle">Marcipher</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+      
+      <a href="mailto:omarabbasov888@gmail.com" class="link email" target="_blank">
+        <span class="link-icon">✉️</span>
+        <div class="link-text">
+          <div class="link-title">Email</div>
+          <div class="link-handle">omarabbasov888@gmail.com</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+      
+      <a href="https://www.instagram.com/captain_marcipher/" class="link instagram" target="_blank">
+        <span class="link-icon">📷</span>
+        <div class="link-text">
+          <div class="link-title">Instagram</div>
+          <div class="link-handle">@captain_marcipher</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+      
+      <a href="https://steamcommunity.com/profiles/76561199278406592/" class="link steam" target="_blank">
+        <span class="link-icon">🎯</span>
+        <div class="link-text">
+          <div class="link-title">Steam</div>
+          <div class="link-handle">marcipher</div>
+        </div>
+        <span class="link-arrow">›</span>
+      </a>
+    </div>
+  </div>
+</body>
+</html>
