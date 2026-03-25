@@ -58,26 +58,6 @@
       align-items: center;
       width: 100%;
       max-width: 450px;
-      padding: 0 15px;
-    }
-
-    @media (max-width: 480px) {
-      .links {
-        padding: 0 10px;
-      }
-      .link {
-        padding: 15px 18px;
-      }
-      .name {
-        font-size: 26px;
-      }
-      .side-decor {
-        display: none;
-      }
-      .corner-decor {
-        width: 80px;
-        height: 80px;
-      }
     }
 
     .avatar-container {
@@ -167,6 +147,7 @@
       -webkit-text-fill-color: transparent;
       animation: shine 3s linear infinite;
       text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+      text-align: center;
     }
 
     @keyframes shine {
@@ -179,6 +160,7 @@
       margin-bottom: 40px;
       letter-spacing: 2px;
       text-transform: uppercase;
+      text-align: center;
     }
 
     .links {
@@ -321,10 +303,12 @@
       pointer-events: none;
       z-index: 0;
       white-space: nowrap;
+      text-align: center;
+      width: 100%;
     }
 
-    .glow-text-1 { top: 10%; left: 50%; transform: translateX(-50%); color: #ff00ff; }
-    .glow-text-2 { bottom: 5%; left: 50%; transform: translateX(-50%); color: #00ffff; }
+    .glow-text-1 { top: 10%; left: 0; color: #ff00ff; }
+    .glow-text-2 { bottom: 5%; left: 0; color: #00ffff; }
 
     .side-decor {
       position: fixed;
@@ -401,6 +385,34 @@
       border-bottom: 3px solid #00ff88;
       border-right: 3px solid #00ff88;
     }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 40px 15px;
+      }
+      .container {
+        width: 100%;
+        padding: 0;
+      }
+      .links {
+        width: 100%;
+      }
+      .link {
+        width: 100%;
+        padding: 15px 18px;
+      }
+      .name {
+        font-size: 24px;
+        text-align: center;
+      }
+      .bio {
+        text-align: center;
+        font-size: 12px;
+      }
+      .floating, .side-decor, .glow-text, .corner-decor {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -440,7 +452,7 @@
       <div class="avatar-ring"></div>
       <div class="avatar-ring"></div>
       <div class="avatar">
-        <img src="https://raw.githubusercontent.com/Captain-Marcipher/marcipher-links/main/download%20(1).jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+        <img src="https://raw.githubusercontent.com/Captain-Marcipher/marcipher-links/main/download%20(1).jpg">
       </div>
     </div>
     
