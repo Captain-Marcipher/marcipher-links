@@ -700,7 +700,7 @@
       <div class="counter-icon">👁️</div>
       <div class="counter-content">
         <div class="counter-label">Total Visits</div>
-        <div id="hidden-counter" style="display:none;"></div>
+        <div id="hidden-counter"></div>
         <div class="counter-value" id="visitor-count">---</div>
       </div>
     </div>
@@ -731,26 +731,22 @@
     createParticles();
   </script>
   <script>
-    function fetchVisitorCount() {
-      var t = setInterval(function() {
-        var container = document.getElementById('hidden-counter');
-        if (container) {
-          var gcElement = container.querySelector('#gcvc-views');
-          if (gcElement && gcElement.innerText) {
-            clearInterval(t);
-            document.getElementById('visitor-count').innerText = gcElement.innerText;
-          }
-        }
-      }, 100);
-    }
-
     var t2 = setInterval(function() {
       if (window.goatcounter && window.goatcounter.visit_count) {
         clearInterval(t2);
         window.goatcounter.visit_count({
-          append: '#hidden-counter'
+          append: '#hidden-counter',
+          style: 'font-size:10px;'
         });
-        fetchVisitorCount();
+        
+        var t = setInterval(function() {
+          var views = document.querySelector('#hidden-counter #gcvc-views');
+          if (views && views.innerText) {
+            clearInterval(t);
+            document.getElementById('visitor-count').innerText = views.innerText;
+            document.getElementById('hidden-counter').style.display = 'none';
+          }
+        }, 100);
       }
     }, 100);
     fetchVisitorCount();
