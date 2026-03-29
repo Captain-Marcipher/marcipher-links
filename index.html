@@ -727,19 +727,10 @@
       }
     }
 
-    async function fetchVisitorCount() {
-      const countElement = document.getElementById('visitor-count');
-      try {
-        const res = await fetch('https://gc.zgo.at/api/count?q=marcipher.goatcounter.com');
-        const data = await res.json();
-        countElement.textContent = data.total.toLocaleString();
-      } catch (e) {
-        countElement.textContent = '?';
-      }
-    }
-
     createParticles();
-    fetchVisitorCount();
+  </script>
+  <script>
+    window.goatcounter.visit_count({append: '.counter-content', start: 0});
   </script>
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
