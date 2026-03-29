@@ -194,9 +194,15 @@
     @media (max-width: 480px) {
       body {
         padding: 40px 10px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
       }
       .container {
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
       .links {
         width: 100%;
@@ -207,6 +213,7 @@
       }
       .name {
         font-size: 26px;
+        text-align: center;
       }
       .bio {
         text-align: center;
@@ -217,6 +224,10 @@
       .corner-decor {
         width: 80px;
         height: 80px;
+      }
+      .visitor-counter {
+        width: 100%;
+        justify-content: center;
       }
     }
 
