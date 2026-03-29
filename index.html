@@ -700,6 +700,7 @@
       <div class="counter-icon">👁️</div>
       <div class="counter-content">
         <div class="counter-label">Total Visits</div>
+        <div id="hidden-counter" style="display:none;"></div>
         <div class="counter-value" id="visitor-count">---</div>
       </div>
     </div>
@@ -731,13 +732,20 @@
   </script>
   <script>
     function fetchVisitorCount() {
-      var r = new XMLHttpRequest();
-      r.addEventListener('load', function() {
-        document.querySelector('#visitor-count').innerText = JSON.parse(this.responseText).count
-      })
-      r.open('GET', 'https://marcipher.goatcounter.com/counter/index.json')
-      r.send()
+      var t = setInterval(function() {
+        var gcElement = document.querySelector('#gcvc-views');
+        if (gcElement) {
+          clearInterval(t);
+          var count = gcElement.innerText;
+          document.querySelector('#visitor-count').innerText = count;
+        }
+      }, 100);
     }
+
+    window.goatcounter.visit_count({
+      append: '#hidden-counter',
+      style: 'display:none'
+    });
     fetchVisitorCount();
   </script>
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
