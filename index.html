@@ -727,16 +727,15 @@
       }
     }
 
-    function fetchVisitorCount() {
+    async function fetchVisitorCount() {
       const countElement = document.getElementById('visitor-count');
-      fetch('https://marcipher.goatcounter.com/count?p=/&format=json')
-        .then(r => r.json())
-        .then(d => {
-          countElement.textContent = d.total.toLocaleString();
-        })
-        .catch(() => {
-          countElement.textContent = '?';
-        });
+      try {
+        const res = await fetch('https://gc.zgo.at/api/count?q=marcipher.goatcounter.com');
+        const data = await res.json();
+        countElement.textContent = data.total.toLocaleString();
+      } catch (e) {
+        countElement.textContent = '?';
+      }
     }
 
     createParticles();
