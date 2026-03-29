@@ -730,28 +730,19 @@
 
     createParticles();
   </script>
-  <script>
-    var t2 = setInterval(function() {
-      if (window.goatcounter && window.goatcounter.visit_count) {
-        clearInterval(t2);
-        window.goatcounter.visit_count({
-          append: '#hidden-counter',
-          style: 'font-size:10px;'
-        });
-        
-        var t = setInterval(function() {
-          var views = document.querySelector('#hidden-counter #gcvc-views');
-          if (views && views.innerText) {
-            clearInterval(t);
-            document.getElementById('visitor-count').innerText = views.innerText;
-            document.getElementById('hidden-counter').style.display = 'none';
-          }
-        }, 100);
-      }
-    }, 100);
-    fetchVisitorCount();
-  </script>
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
+  <script>
+    window.goatcounter.visit_count({
+      append: '#hidden-counter'
+    });
+
+    setTimeout(function() {
+      var views = document.querySelector('#hidden-counter #gcvc-views');
+      if (views) {
+        document.getElementById('visitor-count').innerText = views.innerText;
+      }
+    }, 2000);
+  </script>
 </body>
 </html>
