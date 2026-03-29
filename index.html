@@ -730,13 +730,10 @@
     createParticles();
   </script>
   <script>
-    window.goatcounter.visit_count({append: 'body'})
-  </script>
-  <script>
     var t = setInterval(function() {
         if (window.goatcounter && window.goatcounter.visit_count) {
             clearInterval(t)
-window.goatcounter.visit_count({append: '.counter-content'})
+            window.goatcounter.visit_count({append: '.counter-content'})
         }
     }, 100)
   </script>
