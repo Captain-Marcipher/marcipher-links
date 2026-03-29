@@ -730,27 +730,29 @@
 
     createParticles();
   </script>
+  <script>
+    window.goatcounter = window.goatcounter || {};
+    window.goatcounter.visit_count = window.goatcounter.visit_count || function(opts) {
+      var el = document.createElement('div');
+      el.id = 'gcvc-views';
+      el.innerText = '1';
+      document.querySelector(opts.append).appendChild(el);
+    };
+  </script>
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
   <script>
     window.goatcounter.visit_count({append: 'body'})
   </script>
-  <script>
-    var t = setInterval(function() {
-        if (window.goatcounter && window.goatcounter.visit_count) {
-            clearInterval(t)
-            window.goatcounter.visit_count({append: 'body'})
-        }
-    }, 100)
-  </script>
   <style>
-    #gcvc-root { display: none !important; }
+    body > div:has(#gcvc-views) { display: none !important; }
+    #gcvc-views { display: none !important; }
   </style>
   <script>
-    var t2 = setInterval(function() {
+    var t = setInterval(function() {
       var views = document.querySelector('#gcvc-views');
-      if (views) {
-        clearInterval(t2);
+      if (views && views.innerText) {
+        clearInterval(t);
         document.getElementById('visitor-count').innerText = views.innerText;
       }
     }, 100);
