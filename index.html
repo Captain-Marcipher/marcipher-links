@@ -700,7 +700,7 @@
       <div class="counter-icon">👁️</div>
       <div class="counter-content">
         <div class="counter-label">Total Visits</div>
-        <div class="counter-value" id="visitor-count"></div>
+        <div class="counter-value" id="visitor-count">---</div>
       </div>
     </div>
 
@@ -730,20 +730,15 @@
     createParticles();
   </script>
   <script>
-    var t = setInterval(function() {
-        if (window.goatcounter && window.goatcounter.visit_count) {
-            clearInterval(t)
-            window.goatcounter.visit_count({
-  append: '#visitor-count',
-  style: `
-    div { font-family: 'Orbitron', sans-serif; }
-    #gcvc-views { font-size: 24px; font-weight: 700; background: linear-gradient(90deg, #00ffff, #ff00ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    #gcvc-for { font-size: 10px; letter-spacing: 2px; color: #888; text-transform: uppercase; }
-    #gcvc-by { display: none; }
-  `
-})
-        }
-    }, 100)
+    function fetchVisitorCount() {
+      var r = new XMLHttpRequest();
+      r.addEventListener('load', function() {
+        document.querySelector('#visitor-count').innerText = JSON.parse(this.responseText).count
+      })
+      r.open('GET', 'https://marcipher.goatcounter.com/counter/index.json')
+      r.send()
+    }
+    fetchVisitorCount();
   </script>
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
