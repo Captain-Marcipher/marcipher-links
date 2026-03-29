@@ -732,14 +732,17 @@
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
   <script>
-    window.goatcounter.visit_count({append: 'body'})
-  </script>
-  <script>
     var t = setInterval(function() {
-      var views = document.querySelector('#gcvc-views');
-      if (views) {
+      if (window.goatcounter && window.goatcounter.visit_count) {
         clearInterval(t);
-        document.getElementById('visitor-count').innerText = views.innerText;
+        window.goatcounter.visit_count({append: 'body'});
+        var t2 = setInterval(function() {
+          var views = document.querySelector('#gcvc-views');
+          if (views && views.innerText) {
+            clearInterval(t2);
+            document.getElementById('visitor-count').innerText = views.innerText;
+          }
+        }, 100);
       }
     }, 100);
   </script>
