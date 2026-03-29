@@ -700,7 +700,6 @@
       <div class="counter-icon">👁️</div>
       <div class="counter-content">
         <div class="counter-label">Total Visits</div>
-        <div id="hidden-counter"></div>
         <div class="counter-value" id="visitor-count">---</div>
       </div>
     </div>
@@ -730,32 +729,20 @@
 
     createParticles();
   </script>
-  <script>
-    window.goatcounter = window.goatcounter || {};
-    window.goatcounter.visit_count = window.goatcounter.visit_count || function(opts) {
-      var el = document.createElement('div');
-      el.id = 'gcvc-views';
-      el.innerText = '1';
-      document.querySelector(opts.append).appendChild(el);
-    };
-  </script>
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
           async src="//gc.zgo.at/count.js"></script>
   <script>
-    window.goatcounter.visit_count({append: 'body'})
-  </script>
-  <style>
-    body > div:has(#gcvc-views) { display: none !important; }
-    #gcvc-views { display: none !important; }
-  </style>
-  <script>
     var t = setInterval(function() {
       var views = document.querySelector('#gcvc-views');
-      if (views && views.innerText) {
+      if (views && views.innerText && views.innerText !== '---') {
         clearInterval(t);
         document.getElementById('visitor-count').innerText = views.innerText;
       }
     }, 100);
   </script>
+  <style>
+    #gcvc-root { display: none !important; }
+    #gcvc-for, #gcvc-by { display: none !important; }
+  </style>
 </body>
 </html>
