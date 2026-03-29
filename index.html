@@ -133,10 +133,12 @@
     }
 
     @keyframes particleFloat {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+      3% { opacity: 0; }
+      8% { opacity: 1; }
+      80% { opacity: 1; }
+      92% { opacity: 0; }
+      100% { transform: translateY(-115vh) translateX(50px) rotate(720deg); opacity: 0; }
     }
 
     .shooting-star {
@@ -716,32 +718,18 @@
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = Math.random() * 100 + '%';
+        particle.style.bottom = '-' + (Math.random() * 100 + 50) + 'px';
         particle.style.animationDelay = Math.random() * 15 + 's';
-        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
         particle.style.width = (Math.random() * 3 + 2) + 'px';
         particle.style.height = particle.style.width;
         container.appendChild(particle);
       }
     }
 
-    function updateVisitorCount() {
-      const countElement = document.getElementById('visitor-count');
-      let count = localStorage.getItem('marcipher_visits');
-      
-      if (count === null) {
-        count = 1;
-      } else {
-        count = parseInt(count) + 1;
-      }
-      
-      localStorage.setItem('marcipher_visits', count.toString());
-      
-      const displayCount = Math.max(count, 1337);
-      countElement.textContent = displayCount.toLocaleString();
-    }
-
     createParticles();
-    updateVisitorCount();
   </script>
+  <script data-goatcounter="https://marcipher.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
