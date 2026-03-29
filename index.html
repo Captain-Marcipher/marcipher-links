@@ -21,33 +21,161 @@
       position: relative;
     }
 
-    body::before {
-      content: '';
+    .bg-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: 
-        radial-gradient(ellipse at 20% 20%, rgba(120, 0, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(255, 0, 128, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.05) 0%, transparent 70%);
-      pointer-events: none;
       z-index: 0;
+      overflow: hidden;
+    }
+
+    .bg-gradient {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse at 20% 20%, rgba(120, 0, 255, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(255, 0, 128, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 200, 255, 0.1) 0%, transparent 70%);
+      animation: gradientPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes gradientPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.05); }
     }
 
     .grid-overlay {
-      position: fixed;
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
+        linear-gradient(rgba(0, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    @keyframes gridMove {
+      0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+      100% { transform: perspective(500px) rotateX(60deg) translateY(40px); }
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      animation: orbFloat 10s ease-in-out infinite;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(255, 0, 255, 0.4) 0%, transparent 70%);
+      top: -100px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+
+    .orb-2 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(0, 255, 255, 0.35) 0%, transparent 70%);
+      bottom: -80px;
+      right: -80px;
+      animation-delay: -3s;
+    }
+
+    .orb-3 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 107, 107, 0.3) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -5s;
+    }
+
+    .orb-4 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(255, 255, 0, 0.25) 0%, transparent 70%);
+      top: 20%;
+      right: 10%;
+      animation-delay: -7s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(30px, -30px) scale(1.1); }
+      50% { transform: translate(-20px, 20px) scale(0.95); }
+      75% { transform: translate(20px, 30px) scale(1.05); }
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+      animation: particleFloat 15s linear infinite;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(255, 0, 255, 0.5);
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
+    }
+
+    .shooting-star {
+      position: absolute;
+      width: 100px;
+      height: 2px;
+      background: linear-gradient(90deg, rgba(0, 255, 255, 0.8), transparent);
+      animation: shoot 3s linear infinite;
+      opacity: 0;
+    }
+
+    @keyframes shoot {
+      0% { transform: translateX(-100px) translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      30% { transform: translateX(calc(100vw + 100px)) translateY(200px); opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    .scan-line {
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+      animation: scan 4s linear infinite;
       pointer-events: none;
-      z-index: 1;
+    }
+
+    @keyframes scan {
+      0% { top: -4px; }
+      100% { top: 100%; }
+    }
+
+    .noise {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      pointer-events: none;
     }
 
     .container {
@@ -58,6 +186,36 @@
       align-items: center;
       width: 100%;
       max-width: 450px;
+      padding: 0 15px;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 40px 10px;
+      }
+      .container {
+        padding: 0;
+      }
+      .links {
+        width: 100%;
+      }
+      .link {
+        padding: 15px 18px;
+        width: 100%;
+      }
+      .name {
+        font-size: 26px;
+      }
+      .bio {
+        text-align: center;
+      }
+      .side-decor {
+        display: none;
+      }
+      .corner-decor {
+        width: 80px;
+        height: 80px;
+      }
     }
 
     .avatar-container {
@@ -110,14 +268,6 @@
         inset 0 0 20px rgba(255, 255, 255, 0.1);
       border: 3px solid transparent;
       background-clip: padding-box;
-      overflow: hidden;
-    }
-
-    .avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
     }
 
     .avatar::after {
@@ -147,7 +297,6 @@
       -webkit-text-fill-color: transparent;
       animation: shine 3s linear infinite;
       text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-      text-align: center;
     }
 
     @keyframes shine {
@@ -160,7 +309,6 @@
       margin-bottom: 40px;
       letter-spacing: 2px;
       text-transform: uppercase;
-      text-align: center;
     }
 
     .links {
@@ -236,14 +384,13 @@
       border-radius: 12px;
       box-shadow: 0 4px 15px var(--glow-shadow);
       transition: transform 0.3s;
-      flex-shrink: 0;
     }
 
     .link:hover .link-icon {
       transform: rotate(10deg) scale(1.1);
     }
 
-    .link-text { flex: 1; min-width: 0; }
+    .link-text { flex: 1; }
     .link-title { 
       font-family: 'Orbitron', sans-serif;
       font-weight: 700;
@@ -254,15 +401,11 @@
       font-size: 13px; 
       color: #888;
       margin-top: 2px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
     .link-arrow { 
       font-size: 20px;
       opacity: 0.5;
       transition: all 0.3s;
-      flex-shrink: 0;
     }
     .link:hover .link-arrow {
       opacity: 1;
@@ -303,12 +446,10 @@
       pointer-events: none;
       z-index: 0;
       white-space: nowrap;
-      text-align: center;
-      width: 100%;
     }
 
-    .glow-text-1 { top: 10%; left: 0; color: #ff00ff; }
-    .glow-text-2 { bottom: 5%; left: 0; color: #00ffff; }
+    .glow-text-1 { top: 10%; left: 50%; transform: translateX(-50%); color: #ff00ff; }
+    .glow-text-2 { bottom: 5%; left: 50%; transform: translateX(-50%); color: #00ffff; }
 
     .side-decor {
       position: fixed;
@@ -386,37 +527,84 @@
       border-right: 3px solid #00ff88;
     }
 
-    @media (max-width: 480px) {
-      body {
-        padding: 40px 15px;
-      }
-      .container {
-        width: 100%;
-        padding: 0;
-      }
-      .links {
-        width: 100%;
-      }
-      .link {
-        width: 100%;
-        padding: 15px 18px;
-      }
-      .name {
-        font-size: 24px;
-        text-align: center;
-      }
-      .bio {
-        text-align: center;
-        font-size: 12px;
-      }
-      .floating, .side-decor, .glow-text, .corner-decor {
-        display: none;
-      }
+    .visitor-counter {
+      margin-top: 40px;
+      padding: 15px 30px;
+      background: linear-gradient(135deg, rgba(20, 20, 35, 0.9), rgba(30, 20, 50, 0.9));
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      backdrop-filter: blur(10px);
+      animation: counterPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes counterPulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.1); }
+      50% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.2); }
+    }
+
+    .counter-icon {
+      font-size: 24px;
+      animation: eyeGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes eyeGlow {
+      0%, 100% { filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5)); }
+      50% { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.8)); }
+    }
+
+    .counter-content {
+      text-align: left;
+    }
+
+    .counter-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #888;
+      text-transform: uppercase;
+    }
+
+    .counter-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #00ffff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #444;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .footer span {
+      color: #00ffff;
     }
   </style>
 </head>
 <body>
-  <div class="grid-overlay"></div>
+  <div class="bg-container">
+    <div class="bg-gradient"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+    <div class="grid-overlay"></div>
+    <div class="particles" id="particles"></div>
+    <div class="shooting-star" style="top: 20%; animation-delay: 0s;"></div>
+    <div class="shooting-star" style="top: 40%; animation-delay: -1s;"></div>
+    <div class="shooting-star" style="top: 60%; animation-delay: -2s;"></div>
+    <div class="scan-line"></div>
+    <div class="noise"></div>
+  </div>
   
   <div class="glow-text glow-text-1">MARCIPHER</div>
   <div class="glow-text glow-text-2">GAMER</div>
@@ -452,7 +640,7 @@
       <div class="avatar-ring"></div>
       <div class="avatar-ring"></div>
       <div class="avatar">
-        <img src="https://raw.githubusercontent.com/Captain-Marcipher/marcipher-links/main/download%20(1).jpg">
+        <img src="https://raw.githubusercontent.com/Captain-Marcipher/marcipher-links/main/download%20(1).jpg" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
       </div>
     </div>
     
@@ -505,6 +693,55 @@
         <span class="link-arrow">›</span>
       </a>
     </div>
+
+    <div class="visitor-counter">
+      <div class="counter-icon">👁️</div>
+      <div class="counter-content">
+        <div class="counter-label">Total Visits</div>
+        <div class="counter-value" id="visitor-count">---</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>//</span> MARCIPHER <span>//</span>
+    </div>
   </div>
+
+  <script>
+    function createParticles() {
+      const container = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 15 + 's';
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.style.width = (Math.random() * 3 + 2) + 'px';
+        particle.style.height = particle.style.width;
+        container.appendChild(particle);
+      }
+    }
+
+    function updateVisitorCount() {
+      const countElement = document.getElementById('visitor-count');
+      let count = localStorage.getItem('marcipher_visits');
+      
+      if (count === null) {
+        count = 1;
+      } else {
+        count = parseInt(count) + 1;
+      }
+      
+      localStorage.setItem('marcipher_visits', count.toString());
+      
+      const displayCount = Math.max(count, 1337);
+      countElement.textContent = displayCount.toLocaleString();
+    }
+
+    createParticles();
+    updateVisitorCount();
+  </script>
 </body>
 </html>
