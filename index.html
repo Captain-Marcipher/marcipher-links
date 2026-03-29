@@ -733,19 +733,26 @@
   <script>
     function fetchVisitorCount() {
       var t = setInterval(function() {
-        var gcElement = document.querySelector('#gcvc-views');
-        if (gcElement) {
-          clearInterval(t);
-          var count = gcElement.innerText;
-          document.querySelector('#visitor-count').innerText = count;
+        var container = document.getElementById('hidden-counter');
+        if (container) {
+          var gcElement = container.querySelector('#gcvc-views');
+          if (gcElement && gcElement.innerText) {
+            clearInterval(t);
+            document.getElementById('visitor-count').innerText = gcElement.innerText;
+          }
         }
       }, 100);
     }
 
-    window.goatcounter.visit_count({
-      append: '#hidden-counter',
-      style: 'display:none'
-    });
+    var t2 = setInterval(function() {
+      if (window.goatcounter && window.goatcounter.visit_count) {
+        clearInterval(t2);
+        window.goatcounter.visit_count({
+          append: '#hidden-counter'
+        });
+        fetchVisitorCount();
+      }
+    }, 100);
     fetchVisitorCount();
   </script>
   <script data-goatcounter="https://marcipher.goatcounter.com/count"
